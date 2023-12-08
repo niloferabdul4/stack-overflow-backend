@@ -13,12 +13,11 @@ app.use(express.urlencoded({limit:'30mb',extended:true}))
 app.use(cors())
 
 
-/*create api sample*
 
 app.get('/',(req,res)=>{
     res.send("This is a stack overflow clone API")
 })
-*/
+
 
 app.use('/user',UserRoutes)                      // localhost:/user/
 app.use('/questions',QuestionRoutes)             // localhost:/questions
