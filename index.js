@@ -14,9 +14,9 @@ app.use(cors())
 
 
 
-app.get('/',(req,res)=>{
-    res.send("This is a stack overflow clone API")
-})
+// app.get('/',(req,res)=>{
+//     res.send("This is a stack overflow clone API")
+// })
 
 
 app.use('/user',UserRoutes)                      // localhost:/user/
