@@ -24,7 +24,7 @@ app.get('/',(req,res)=>{
 app.use('/user',UserRoutes)                      // localhost:/user/
 app.use('/questions',QuestionRoutes)             // localhost:/questions
 app.use('/answer',AnswerRoutes)
-app.use('/chat',ChatRoutes)
+app.use('/chatbot',ChatRoutes)
 
 //create PORT
 

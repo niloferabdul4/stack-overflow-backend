@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-
 import users from "../models/auth.js";
 
 //register fn

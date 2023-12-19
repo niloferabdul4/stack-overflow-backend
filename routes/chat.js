@@ -1,38 +1,59 @@
 import express from 'express'
 import OpenAIAPI from 'openai';
 import dotenv from 'dotenv'
-
-
+import { fetchAllMessages } from '../controllers/chats.js';
+import mongoose from "mongoose";
+import Chats from "../models/chat.js";
 const router = express.Router()
 dotenv.config()
 
 /*****  Open AI   *******/
 
 const openai = new OpenAIAPI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY
+
 });
 
-router.post('/send', async (req, res) => {
-
-    const { prompt } = req.body                     //getting prompt from req body
+router.post("/send", async (req, res) => {
     try {
+        const textData = req.body  
+        //console.log(textData)
+        const {prompt,userId}=textData
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [{ role: 'assistant', content: prompt }],           //arry of object with 2 fields role and content  role->assistant  content->prompt(our question)
+            messages: [
+             
+                {                     //arry of object with 2 fields role and content  role->assistant  content->prompt(our question)
+                    "role": "assistant",
+                    "content":"Hi.How can I help you.."
+                },
+                {                     //arry of object with 2 fields role and content  role->assistant  content->prompt(our question)
+                "role": "user",
+                "content":prompt
+            },
+        
+            ],
             temperature: 1,
-            max_tokens: 100,
+            max_tokens: 60,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
         });
-       console.log(response)
-        res.send(response.data.choices[0].message.content)
+
+        const botResponse=response?.choices[0].message.content
+        // Send the response to the client
+        res.send(botResponse)
+       await Chats.create({ prompt,botResponse,userId});
+        
     }
     catch (error) {
         res.status(500).send(error)
     }
 
 }
-)         // (endpoint,controller fn)
+)
 
+
+
+router.get("/get/:userId", fetchAllMessages)
 export default router;
