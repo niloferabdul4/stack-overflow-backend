@@ -5,8 +5,8 @@ export const fetchAllMessages=async(req,res)=>{
     try {      
       const { userId} = req.params;
         const chats = await Chats.find({userId});
-    console.log(chats)
         res.status(200).json(chats);
+        //console.log(chats)
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
