@@ -12,7 +12,7 @@ export const sendEmail=(email,otp,res)=>{
     };
   
     transporter.sendMail(mailOptions, (error, info) => {
-      console.log(mailOptions)
+     // console.log(mailOptions)
       if (error) {
         console.error("Error sending email:", error);
       return res.status(400).json({ success: false, message: 'Email not sent', error: error.message });
