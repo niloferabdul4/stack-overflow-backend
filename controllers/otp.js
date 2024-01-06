@@ -35,6 +35,7 @@ export const sendOTP = async (req, res) => {
             res.status(404).json({ message: 'User Not Found In DB' })
         }
         const otp = Math.floor(1000 + Math.random() * 9000).toString();  //generate random otp 
+        const OTPExpirationTime = new Date().getTime() + 10 * 60 * 1000; // 10 minutes expiration
         const userWithOTP = await UserOTP.findOne({ email })        // check  user with this email exist in userotb schem
 
         // if OTP already exist in user,update OTP of that user
@@ -42,7 +43,7 @@ export const sendOTP = async (req, res) => {
         if (userWithOTP) {
             const updateOTPUser = await UserOTP.findByIdAndUpdate(
                 { _id: userWithOTP._id },
-                { OTP: otp },
+                { OTP: otp ,OTPExpirationTime:OTPExpirationTime},
                 { new: true })
             await updateOTPUser.save()
             //sendEmail(email,otp,res);
@@ -57,7 +58,7 @@ export const sendOTP = async (req, res) => {
         }
         // if there is no OTP in user,create a new OTP
         else {
-            const saveOTPUser = new UserOTP({ email: email, OTP: otp })
+            const saveOTPUser = new UserOTP({ email: email, OTP: otp,OTPExpirationTime:OTPExpirationTime})
             await saveOTPUser.save();
             //sendEmail(email,otp,res);
             sendEmail(mailOptions,res)
@@ -73,7 +74,7 @@ export const sendOTP = async (req, res) => {
 
 export const verifyOTP=async(req,res)=>{
     try{
-    const {OTPInput,email}=req.body
+    const {OTPInput,OTPEnteredTime,email}=req.body
     const existUser=await UserOTP.find({email})
 
     if(!existUser)
@@ -81,14 +82,19 @@ export const verifyOTP=async(req,res)=>{
         return res.status(404).json({message:'User does not exist'})
     }
 
-    if(OTPInput===existUser[0].OTP)
+    if(OTPInput===existUser[0].OTP) 
     {
-    
+        if(OTPEnteredTime<existUser[0].OTPExpirationTime )
+        {
         return res.status(200).json({message:'Email Verified Successfully'})
+        }
+        else{
+            return res.status(400).json({message:'Your OTP has expired'})
+        }
        
     }
     else{
-        return res.status(400).json({ message: "Invalid credentials" });
+        return res.status(400).json({ message: "Invalid OTP" });
     }
 }
 catch(error){

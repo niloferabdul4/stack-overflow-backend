@@ -7,6 +7,8 @@ import UserRoutes from './routes/users.js'
 import QuestionRoutes from './routes/questions.js'
 import AnswerRoutes from './routes/answers.js'
 import ChatRoutes from './routes/chat.js'
+import SubscriptionRoutes from './routes/subscription.js'
+
 
 const app=express()                 // create a express server
 dotenv.config()
@@ -25,7 +27,7 @@ app.use('/user',UserRoutes)                      // localhost:/user/
 app.use('/questions',QuestionRoutes)             // localhost:/questions
 app.use('/answer',AnswerRoutes)
 app.use('/chatbot',ChatRoutes)
-
+app.use('/subscription',SubscriptionRoutes)
 //create PORT
 
 
