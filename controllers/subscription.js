@@ -4,8 +4,8 @@ import Questions from "../models/questions.js";
 import Stripe from 'stripe'
 import dotenv from 'dotenv'
 dotenv.config()
-const stripe = Stripe('sk_test_51OUtL2DFzqSUPDL5YMx8QP44iFE2fMoFCfVWw5XYGtrY7TIQpReVkkptWKwcPkXFreNXyhvPMVG5JLqSPVy79OHD00vaBkkLYL');
-
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+//console.log('stripe-secret',process.env.STRIPE_SECRET_KEY)
 
 export const updatePlan = async (req, res) => {
     try {
