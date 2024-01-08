@@ -128,12 +128,12 @@ export const countUpVotes = async (req, res) => {
             res.status(404).send('Question Unavailable')
         }
 
-        const question = await Questions.findById(_id)                // get the particular question and assign to'qusetion' variable
+        const question = await Questions.findById(_id)  // get the particular question and assign to'qusetion' variable
         const postedUserId = question.userId;
 
         // for every 5 votes,get 50 points &  silver badge 
 
-        if ( question.upVote.length % 5 === 0) {
+        if (question.upVote.length % 5 === 0) {
             console.log(`You have earned 50 points and an additional silver badge for ${question.upVote.length} votes`);
             const updatedUser = await Users.findByIdAndUpdate(
                 { _id: postedUserId },
@@ -155,7 +155,7 @@ export const countUpVotes = async (req, res) => {
                 { _id: postedUserId },
                 {
                     $inc: { EarnedPoints: 0, SilverdBadge: 0 }
-                }, // Adjust this increment as needed
+                },
                 { new: true }
             );
 

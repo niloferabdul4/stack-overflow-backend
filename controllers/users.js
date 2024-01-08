@@ -35,7 +35,6 @@ export const getAllUsers = async (req, res) => {
 export const updateProfile = async (req, res) => {
     const { id: _id } = req.params
     const { name, about, tags } = req.body
-    console.log('earnedPoints-updateProfilecontroller',earnedPoints)
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         res.status.send('User Unavailable')
     }
